@@ -1,0 +1,120 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://Images/GameImages/Mario64.jpg" type="Texture" id=1]
+[ext_resource path="res://PixelatedImage.gd" type="Script" id=2]
+[ext_resource path="res://Fonts/new_dynamicfont.tres" type="DynamicFont" id=3]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+
+uniform int amount = 40;
+
+void fragment() {
+	vec2 grid_uv = round(UV * float(amount)) / float(amount);
+	vec4 text = texture(TEXTURE, grid_uv);
+	COLOR = text;
+}"
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
+shader_param/amount = 40
+
+[node name="PixelatedImage" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="Image" type="Sprite" parent="."]
+material = SubResource( 2 )
+texture = ExtResource( 1 )
+offset = Vector2( 960, 450 )
+
+[node name="GUI" type="MarginContainer" parent="."]
+margin_right = 1920.0
+margin_bottom = 1080.0
+rect_min_size = Vector2( 1920, 1080 )
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GUI"]
+margin_right = 1920.0
+margin_bottom = 1080.0
+mouse_filter = 2
+
+[node name="topBuffer" type="MarginContainer" parent="GUI/VBoxContainer"]
+margin_right = 1920.0
+margin_bottom = 900.0
+rect_min_size = Vector2( 0, 900 )
+mouse_filter = 2
+size_flags_vertical = 3
+
+[node name="LabelHbox" type="HBoxContainer" parent="GUI/VBoxContainer"]
+margin_top = 904.0
+margin_right = 1920.0
+margin_bottom = 990.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="GUI/VBoxContainer/LabelHbox"]
+margin_top = 34.0
+margin_right = 1920.0
+margin_bottom = 51.0
+size_flags_horizontal = 3
+size_flags_vertical = 6
+custom_fonts/font = ExtResource( 3 )
+text = "Level 1 / 20"
+valign = 1
+
+[node name="Label2" type="Label" parent="GUI/VBoxContainer/LabelHbox"]
+visible = false
+margin_left = 962.0
+margin_top = 34.0
+margin_right = 1920.0
+margin_bottom = 51.0
+size_flags_horizontal = 3
+size_flags_vertical = 6
+custom_fonts/font = ExtResource( 3 )
+text = "Difficulty: Hard"
+align = 2
+valign = 1
+
+[node name="ButtonHbox" type="HBoxContainer" parent="GUI/VBoxContainer"]
+margin_top = 994.0
+margin_right = 1920.0
+margin_bottom = 1080.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Prev" type="Button" parent="GUI/VBoxContainer/ButtonHbox"]
+margin_right = 477.0
+margin_bottom = 86.0
+size_flags_horizontal = 3
+text = "Previous"
+
+[node name="Down" type="Button" parent="GUI/VBoxContainer/ButtonHbox"]
+margin_left = 481.0
+margin_right = 958.0
+margin_bottom = 86.0
+size_flags_horizontal = 3
+text = "Res Down"
+
+[node name="Up" type="Button" parent="GUI/VBoxContainer/ButtonHbox"]
+margin_left = 962.0
+margin_right = 1439.0
+margin_bottom = 86.0
+size_flags_horizontal = 3
+text = "Res Up"
+
+[node name="Next" type="Button" parent="GUI/VBoxContainer/ButtonHbox"]
+margin_left = 1443.0
+margin_right = 1920.0
+margin_bottom = 86.0
+size_flags_horizontal = 3
+text = "Next"
+
+[connection signal="pressed" from="GUI/VBoxContainer/ButtonHbox/Prev" to="." method="_on_Prev_pressed"]
+[connection signal="pressed" from="GUI/VBoxContainer/ButtonHbox/Down" to="." method="_on_Down_pressed"]
+[connection signal="pressed" from="GUI/VBoxContainer/ButtonHbox/Up" to="." method="_on_Up_pressed"]
+[connection signal="pressed" from="GUI/VBoxContainer/ButtonHbox/Next" to="." method="_on_Next_pressed"]
